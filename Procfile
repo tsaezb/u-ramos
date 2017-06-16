@@ -1,1 +1,1 @@
-web: gunicorn u-ramos.wsgi --log-file -
+web: gunicorn u_ramos.wsgi --log-file -
