@@ -1,0 +1,1 @@
+web: gunicorn u-ramos.wsgi --log-file -
