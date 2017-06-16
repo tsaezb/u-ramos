@@ -1,0 +1,17 @@
+{
+  "name": "u-ramos",
+  "homepage": "https://github.com/tsaezb/u-ramos",
+  "authors": [
+    "Team Ardillas"
+  ],
+  "description": "small prototype",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
