@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>U-ramos</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+        <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+        
+        <script>
+            $(document).ready(function(){
+                 $('select#select_ramos').change(function () {
+                    var optionSelected = $(this).find("option:selected");
+                    var valueSelected  = optionSelected.val();
+                    var ramo_name   = optionSelected.text();
+                    
+                    data = {'rmo' : ramo_name, csrfmiddlewaretoken: '{{ csrf_token }}'};
+                    $.ajax({
+                        method: "POST",
+                        url: "/getdetails/",
+                        data: data
+                    }).done(function( result ) {
+                        console.log(result);
+                        $("#select_profes option").remove();
+                        for (var i = result.length - 1; i >= 0; i--) {
+                            $("#select_profes").append('<option>'+ result[i].name +'</option>');
+                        };
+                    });
+                    /* $.ajax('/getdetails',data,function(result){ 
+                            console.log(result);
+                            $("#select_profes option").remove();
+                            for (var i = result.length - 1; i >= 0; i--) {
+                                $("#select_profes").append('<option>'+ result[i].name +'</option>');
+                            };
+                         });*/
+                 });
+            });
+        </script>
+    </head>
+    
+    <style type="text/css">
+       body {
+            background: linear-gradient(#7ac3ff 10%, #f6ffb2 90%);
+            padding-left: 4em;
+            padding-right: 4em;
+        }
+    </style>
+<body>
+    <h1>Bienvenidos a U-ramos!</h1>
+    <p>El objetivo de U-ramos es presentar una alternativa para que los alumnos se informen de ramos antes de la Inscripción Académica.</p>
+    <p>Si quieres aportar con información puedes hacerlo <a href="https://docs.google.com/forms/d/e/1FAIpQLSe9qTLE9DG_vNgCiXWw55yySYuZ72n2w-eOuya4LasE04MXRg/viewform?c=0&w=1">acá</a>. Puedes contestarla las veces que quieras!</p>
+    <div class="ui container segment">
+        <div class="ui grid">
+            <h3>Selecciona algún ramo que te interese y después al profe que haya dictado el ramo</h3>
+            <div class="row">
+                <div class="center aligned column">
+                    <select class="ui dropdown" id="select_ramos" name="select_ramos">
+                        {% for ramo in ramos %}
+                            <option value="{{ ramo.name }}">{{ ramo.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="ui dropdown" id="select_profes" name="select_profes">
+                    </select>
+                </div><!-- creo que ahí si? no se, le meto weas a la base de datos? si, probemos!-->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
