@@ -21,6 +21,6 @@ from core.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', Home),
-    url(r'^/$', Home),
-    url(r'^getdetails/', getdetails)
+    url(r'^getdetails/', getdetails),
+    url(r'^comentarios$', comentarios_ajax),
 ]

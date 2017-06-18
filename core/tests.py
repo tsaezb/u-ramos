@@ -64,4 +64,3 @@ class U_ramos_test(TestCase):
         self.assertIn('Ramo 2</option>',response.content)
         self.assertIn('Ramo 3</option>',response.content)
         
-        

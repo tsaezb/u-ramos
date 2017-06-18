@@ -22,17 +22,34 @@
                     }).done(function( result ) {
                         console.log(result);
                         $("#select_profes option").remove();
+                        $("#select_profes").append('<option>Elije un profesor:</option>');
                         for (var i = result.length - 1; i >= 0; i--) {
-                            $("#select_profes").append('<option>'+ result[i].name +'</option>');
+                            $("#select_profes").append('<option value="' + result[i].id + '">'+ result[i].name +'</option>');
                         };
                     });
-                    /* $.ajax('/getdetails',data,function(result){ 
-                            console.log(result);
-                            $("#select_profes option").remove();
-                            for (var i = result.length - 1; i >= 0; i--) {
-                                $("#select_profes").append('<option>'+ result[i].name +'</option>');
-                            };
-                         });*/
+                 });
+                 
+                 $('select#select_profes').change(function () {
+                    var optionSelected = $(this).find("option:selected");
+                    var id_profe  = optionSelected.val();
+                    var nombre_ramo = $('select#select_ramos').find('option:selected').val()
+                    var data = {
+                        id_profe: id_profe,
+                        nombre_ramo: nombre_ramo
+                    };
+                    $.get('/comentarios', data, function(response) {
+                        var respuesta = JSON.parse(response);
+                        $('.comment').remove();
+                        $('#cantidad-comentarios').html(respuesta.length);
+                        respuesta.forEach(function (comentario) {
+                            var fecha = $('<span>', {"class": "date"}).text((new Date(comentario.fields.timestamp)).toLocaleString());
+                            var texto = $('<div>', {"class": "text"}).text(comentario.fields.texto);
+                            $('#comentarios').append(
+                                `<div class="comment"><div class="content">
+                                    <div class="metadata">${fecha.prop('outerHTML')}</div>
+                                    ${texto.prop('outerHTML')}</div></<div>`);
+                        });
+                    })
                  });
             });
         </script>
@@ -65,6 +82,15 @@
             </div>
         </div>
     </div>
+    
+    <div class="ui container segment">
+        <div id="comentarios" class="ui comments">
+            <h3 class="ui dividing header">
+                 Comentarios (<span id="cantidad-comentarios">0</span>)
+            </h3>
+        </div>
+    </div>
+    
 </body>
 
 </html>
