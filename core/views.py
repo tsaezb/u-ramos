@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
-from models import Ramo, Profe, Comentario
+from .models import Ramo, Profe, Comentario
 try:
     from django.utils import simplejson as json
 except:
