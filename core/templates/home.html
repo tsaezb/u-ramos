@@ -78,7 +78,7 @@
                     </select>
                     <select class="ui dropdown" id="select_profes" name="select_profes">
                     </select>
-                </div><!-- creo que ahí si? no se, le meto weas a la base de datos? si, probemos!-->
+                </div>
             </div>
         </div>
     </div>
@@ -90,6 +90,19 @@
             </h3>
         </div>
     </div>
+    
+    {% if comm_status %}
+    <div>Gracias por ayudarnos a mejorar!</div>
+    {% else %}
+    <div class="ui container segment"> Deja tu comentario o sugerencia sobre la página aquí:
+    <form action="/send_comm" class="ui form" method="post"> {% csrf_token %}
+        <textarea name="comm"></textarea>
+        <button type="submit" id="comm_submit" class="ui green basic button" name="action_type" value="send" />
+        Enviar
+        </button>
+    </form>
+    </div>
+    {% endif %}
     
 </body>
 
