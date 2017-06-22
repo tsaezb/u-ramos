@@ -72,6 +72,7 @@
             <div class="row">
                 <div class="center aligned column">
                     <select class="ui dropdown" id="select_ramos" name="select_ramos">
+                        <option disabled selected>--- Selecciona un ramo ---</option>
                         {% for ramo in ramos %}
                             <option value="{{ ramo.name }}">{{ ramo.name }}</option>
                         {% endfor %}
