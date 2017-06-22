@@ -22,3 +22,7 @@ class Comentario(models.Model):
     profe = models.ForeignKey(Profe)
     ramo = models.ForeignKey(Ramo)
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
+
+class Sugerencia(models.Model):
+    texto = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True, editable=False)

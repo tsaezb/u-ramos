@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
-from .models import Ramo, Profe, Comentario
+from .models import Ramo, Profe, Comentario, Sugerencia
 try:
     from django.utils import simplejson as json
 except:
@@ -12,7 +12,7 @@ def Home(request):
     if request.method == "GET":
         Ramos = Ramo.objects.all()
         Profes = Profe.objects.all()
-        return render(request, 'home.html', {"ramos": Ramos, "profes": Profes})
+        return render(request, 'home.html', {"ramos": Ramos, "profes": Profes, "comm_status": False})
         
 def getdetails(request):
     ramo_name = request.POST['rmo']
@@ -39,3 +39,11 @@ def comentarios_ajax(request):
         Comentario.objects.filter(profe=profe, ramo=ramo),
     )
     return JsonResponse(comentarios, safe=False)
+
+def save_comm(request):
+    comment = request.POST.get("comm")
+    new_sug = Sugerencia(texto=comment)
+    new_sug.save()
+    Ramos = Ramo.objects.all()
+    Profes = Profe.objects.all()
+    return render(request, 'home.html', {"ramos": Ramos, "profes": Profes, "comm_status": True})
