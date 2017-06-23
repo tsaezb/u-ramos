@@ -20,11 +20,12 @@
                         url: "/getdetails/",
                         data: data
                     }).done(function( result ) {
-                        console.log(result);
-                        $("#select_profes option").remove();
-                        $("#select_profes").append('<option>Elije un profesor:</option>');
+                        $("#select_profes .profe").remove();
+                        $('.comment').remove();
+                        $('#cantidad-comentarios').html(0);
+                        $("#select_profes .default").attr("selected", true);
                         for (var i = result.length - 1; i >= 0; i--) {
-                            $("#select_profes").append('<option value="' + result[i].id + '">'+ result[i].name +'</option>');
+                            $("#select_profes").append('<option class="profe" value="' + result[i].id + '">'+ result[i].name +'</option>');
                         };
                     });
                  });
@@ -78,6 +79,7 @@
                         {% endfor %}
                     </select>
                     <select class="ui dropdown" id="select_profes" name="select_profes">
+                        <option class="default" disabled selected>--- Elije un profesor ---</option>
                     </select>
                 </div>
             </div>
@@ -93,7 +95,7 @@
     </div>
     
     {% if comm_status %}
-    <div>Gracias por ayudarnos a mejorar!</div>
+    <h3>Gracias por ayudarnos a mejorar!</h3>
     {% else %}
     <div class="ui container segment"> Deja tu comentario o sugerencia sobre la página aquí:
     <form action="/send_comm" class="ui form" method="post"> {% csrf_token %}
