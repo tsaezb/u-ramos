@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import Ramo, Profe
+from .models import Ramo, Profe, Sugerencia, Comentario
 
 class U_ramos_test(TestCase):
     def test_link_to_form_exists(self):
@@ -61,4 +61,11 @@ class U_ramos_test(TestCase):
         self.assertIn('Ramo 1</option>',response.content)
         self.assertIn('Ramo 2</option>',response.content)
         self.assertIn('Ramo 3</option>',response.content)
+    
+    def test_existSugerencia(self):
+        #arrange
+        sug = Sugerencia.objects.create(texto="Comentario 1")
+        #act
+        #assert
+        self.assertEquals(1, Sugerencia.objects.all().count())
         

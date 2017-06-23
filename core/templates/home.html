@@ -39,6 +39,7 @@
                         nombre_ramo: nombre_ramo
                     };
                     $.get('/comentarios', data, function(response) {
+                        
                         var respuesta = JSON.parse(response);
                         $('.comment').remove();
                         $('#cantidad-comentarios').html(respuesta.length);
@@ -51,9 +52,33 @@
                                     ${texto.prop('outerHTML')}</div></<div>`);
                         });
                     })
+                    $.get('/datos', data, function(response){
+                        $('#importancia_asistencia_auxiliar').text(
+                            response.importancia_asistencia_auxiliar)
+                        $('#importancia_asistencia_catedra').text(
+                            response.importancia_asistencia_catedra)
+                        $('#exigencia_ramo_profesor').text(
+                            response.exigencia_ramo_profesor)    
+                        $('#recomendado').text(
+                            response.recomendado)
+                        $('#notas_varias').show()
+                    })
+                    
                  });
             });
         </script>
+        
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        
+          ga('create', 'UA-101525951-1', 'auto');
+          ga('send', 'pageview');
+        
+        </script>
+        
     </head>
     
     <style type="text/css">
@@ -82,6 +107,24 @@
                         <option class="default" disabled selected>--- Elije un profesor ---</option>
                     </select>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+     <div class="ui container segment">
+        <div id="notas" class="ui comments">
+            <h3 class="ui dividing header">
+                 Notas
+            </h3>
+            <div id="notas_varias" style="display:none">
+                <p>Importancia asistencia auxiliar</p>
+                <span id="importancia_asistencia_auxiliar"></span>/7
+                <p>Importancia asistencia a cátedra</p>
+                <span id="importancia_asistencia_catedra"></span>/7
+                <p>Exigencia</p>
+                <span id="exigencia_ramo_profesor"></span>/7
+                <p>Porcentaje recomendados</p>
+                <span id="recomendado"></span> %
             </div>
         </div>
     </div>

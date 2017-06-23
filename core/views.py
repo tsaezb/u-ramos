@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from .models import Ramo, Profe, Comentario, Sugerencia
+from django.db.models import Avg
+
 try:
     from django.utils import simplejson as json
 except:
@@ -47,3 +49,25 @@ def save_comm(request):
     Ramos = Ramo.objects.all()
     Profes = Profe.objects.all()
     return render(request, 'home.html', {"ramos": Ramos, "profes": Profes, "comm_status": True})
+    
+def get_datos(request):
+    profe = request.GET.get("id_profe")
+    
+    ramo = request.GET.get('nombre_ramo')
+    p = Profe.objects.get(id=profe)
+    r = Ramo.objects.get(name=ramo)
+    PROM_importancia_asistencia_catedra = Comentario.objects.filter(profe=p, ramo= r).aggregate(Avg('importancia_asistencia_catedra'))
+    PROM_importancia_asistencia_auxiliar = Comentario.objects.filter(profe=p, ramo= r).aggregate(Avg('importancia_asistencia_auxiliar'))
+    PROM_exigencia_ramo_profesor = Comentario.objects.filter(profe=p, ramo= r).aggregate(Avg('exigencia_ramo_profesor'))
+    comentarios = Comentario.objects.filter(profe=p, ramo= r)
+    total_recomienda = comentarios.filter(recomienda=True).count()
+    if comentarios.count()==0:
+        porc_recom = 'No hay datos'
+    else:
+        porc_recom = total_recomienda*100/comentarios.count()
+    print PROM_importancia_asistencia_catedra
+    return JsonResponse({"importancia_asistencia_catedra": PROM_importancia_asistencia_catedra["importancia_asistencia_catedra__avg"],
+        "importancia_asistencia_auxiliar": PROM_importancia_asistencia_auxiliar["importancia_asistencia_auxiliar__avg"],
+        "exigencia_ramo_profesor": PROM_exigencia_ramo_profesor["exigencia_ramo_profesor__avg"],
+        "recomendado": porc_recom
+    })

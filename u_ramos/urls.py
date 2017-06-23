@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^$', Home),
     url(r'^getdetails/', getdetails),
     url(r'^comentarios$', comentarios_ajax),
-    url(r'^send_comm', save_comm),
+    url(r'^send_comm$', save_comm),
+    url(r'^datos$', get_datos),
 ]
