@@ -1,8 +1,6 @@
 from django.test import TestCase, Client
 from .models import Ramo, Profe
 
-# Create your tests here.
-
 class U_ramos_test(TestCase):
     def test_link_to_form_exists(self):
         #arrange
@@ -27,7 +25,7 @@ class U_ramos_test(TestCase):
         r2 = Ramo.objects.create(name="Ramo 2", code="CC0001")
         r3 = Ramo.objects.create(name="Ramo 3", code="CC0002")
         #act
-        response = client.get("/") #solo va a existir 1 pagina, la base
+        response = client.get("/") 
         #assert
         
         self.assertIn('Ramo 1</option>',response.content)
