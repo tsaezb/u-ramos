@@ -1,6 +1,7 @@
 # Cloud9 IDE - http://c9.io
 .c9revisions
 .c9
+.~c9*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
