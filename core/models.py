@@ -43,7 +43,7 @@ class Comentario(models.Model):
         choices=SEMESTRES,
         default=PRIMAVERA,
     )
-    year = models.IntegerField('year', max_length=4, choices=YEARS, default=datetime.datetime.now().year)
+    year = models.IntegerField('year', choices=YEARS, default=datetime.datetime.now().year)
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
 
 class Sugerencia(models.Model):
