@@ -33,10 +33,10 @@ class Comentario(models.Model):
     texto = models.CharField(max_length=200)
     profe = models.ForeignKey(Profe)
     ramo = models.ForeignKey(Ramo)
-    importancia_asistencia_catedra = models.IntegerField(max_length=1,choices=IMPORTANCIA,default=4)
-    importancia_asistencia_auxiliar = models.IntegerField(max_length=1, choices=IMPORTANCIA, default=4)
-    exigencia_ramo_profesor = models.IntegerField(max_length=1, choices=IMPORTANCIA, default=4)
-    metodos_profesor = models.IntegerField(max_length=1, choices=IMPORTANCIA, default=4)
+    importancia_asistencia_catedra = models.IntegerField(choices=IMPORTANCIA,default=4)
+    importancia_asistencia_auxiliar = models.IntegerField( choices=IMPORTANCIA, default=4)
+    exigencia_ramo_profesor = models.IntegerField( choices=IMPORTANCIA, default=4)
+    metodos_profesor = models.IntegerField( choices=IMPORTANCIA, default=4)
     recomienda = models.BooleanField(default=False)
     semestre = models.CharField(
         max_length=2,
