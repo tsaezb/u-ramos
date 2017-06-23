@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import datetime
+
 from django.db import models
 
 # Create your models here.
@@ -18,9 +20,30 @@ class Profe(models.Model):
         return self.name
         
 class Comentario(models.Model):
+    YEARS = [(r, r) for r in range(1984, datetime.date.today().year + 1)]
+    IMPORTANCIA = [(r, r) for r in range(1,8)]
+    PRIMAVERA= 'P'
+    OTONO = 'O'
+    VERANO = 'V'
+    SEMESTRES = (
+        (PRIMAVERA, 'Primavera'),
+        (OTONO, 'Otono'),
+        (VERANO, 'Verano'),
+    )
     texto = models.CharField(max_length=200)
     profe = models.ForeignKey(Profe)
     ramo = models.ForeignKey(Ramo)
+    importancia_asistencia_catedra = models.IntegerField(max_length=1,choices=IMPORTANCIA,default=4)
+    importancia_asistencia_auxiliar = models.IntegerField(max_length=1, choices=IMPORTANCIA, default=4)
+    exigencia_ramo_profesor = models.IntegerField(max_length=1, choices=IMPORTANCIA, default=4)
+    metodos_profesor = models.IntegerField(max_length=1, choices=IMPORTANCIA, default=4)
+    recomienda = models.BooleanField(default=False)
+    semestre = models.CharField(
+        max_length=2,
+        choices=SEMESTRES,
+        default=PRIMAVERA,
+    )
+    year = models.IntegerField('year', max_length=4, choices=YEARS, default=datetime.datetime.now().year)
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
 
 class Sugerencia(models.Model):
