@@ -1,0 +1,8 @@
+[
+{"pk": 0, "fields": {"code": "CM2004", "name": "Fisicoquimica"}, "model": "core.Ramo"},
+{"pk": 1, "fields": {"code": "CC3001", "name": "Algoritmos y estructuras de datos"},"model": "core.Ramo"},
+{"pk": 2, "fields": {"code": "FI2002", "name": "Electromagnetismo"}, "model": "core.Ramo"},
+{"pk": 3, "fields": {"code": "FI2004", "name": "Termodinamica"}, "model": "core.Ramo"},
+{"pk": 4, "fields": {"code": "MA1002", "name": "Calculo diferencial e integral"}, "model": "core.Ramo"},
+{"pk": 5, "fields": {"code": "FI2001", "name": "Mecanica"}, "model": "core.Ramo"}
+]
