@@ -54,4 +54,4 @@ class Sugerencia(models.Model):
     texto = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
     def __str__(self):
-        return "ID " +self.pk
+        return "ID " + str(self.pk)
