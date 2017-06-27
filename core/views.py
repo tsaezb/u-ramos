@@ -38,7 +38,8 @@ def comentarios_ajax(request):
     id_profe = request.GET.get('id_profe')
     profe = Profe.objects.get(id=id_profe)
     comentarios = serializers.serialize('json',
-        Comentario.objects.filter(profe=profe, ramo=ramo),
+        Comentario.objects.filter(profe=profe, ramo=ramo).\
+            exclude(texto__isnull=True).exclude(texto__exact=""),
     )
     return JsonResponse(comentarios, safe=False)
 
@@ -51,6 +52,9 @@ def save_comm(request):
     return render(request, 'home.html', {"ramos": Ramos, "profes": Profes, "comm_status": True})
     
 def get_datos(request):
+    def truncar(x):
+        return ('%.2f' % x).rstrip('0').rstrip('.')
+    
     profe = request.GET.get("id_profe")
     
     ramo = request.GET.get('nombre_ramo')
@@ -65,9 +69,8 @@ def get_datos(request):
         porc_recom = 'No hay datos'
     else:
         porc_recom = total_recomienda*100/comentarios.count()
-    print PROM_importancia_asistencia_catedra
-    return JsonResponse({"importancia_asistencia_catedra": PROM_importancia_asistencia_catedra["importancia_asistencia_catedra__avg"],
-        "importancia_asistencia_auxiliar": PROM_importancia_asistencia_auxiliar["importancia_asistencia_auxiliar__avg"],
-        "exigencia_ramo_profesor": PROM_exigencia_ramo_profesor["exigencia_ramo_profesor__avg"],
+    return JsonResponse({"importancia_asistencia_catedra": truncar(PROM_importancia_asistencia_catedra["importancia_asistencia_catedra__avg"]),
+        "importancia_asistencia_auxiliar": truncar(PROM_importancia_asistencia_auxiliar["importancia_asistencia_auxiliar__avg"]),
+        "exigencia_ramo_profesor": truncar(PROM_exigencia_ramo_profesor["exigencia_ramo_profesor__avg"]),
         "recomendado": porc_recom
     })
