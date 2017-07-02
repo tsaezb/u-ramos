@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html>
     <head>
         <title>U-ramos</title>
@@ -46,10 +47,19 @@
                         respuesta.forEach(function (comentario) {
                             var fecha = $('<span>', {"class": "date"}).text((new Date(comentario.fields.timestamp)).toLocaleString());
                             var texto = $('<div>', {"class": "text"}).text(comentario.fields.texto);
+                            var like = $('<div>', {"class": "rating"});
+                            var corazon = $('<i>', {"class": "star icon"}).text("2");
+                            var likear =$('<a>', {"class": "upvote"}).text("Like");
+                            var deslikear =$('<a>', {"class": "downvote"}).text("Dislike");
+                            like.append(corazon)
                             $('#comentarios').append(
                                 `<div class="comment"><div class="content">
-                                    <div class="metadata">${fecha.prop('outerHTML')}</div>
-                                    ${texto.prop('outerHTML')}</div></<div>`);
+                                    <div class="metadata">${fecha.prop('outerHTML')} ${like.prop('outerHTML')}</div>
+                                    ${texto.prop('outerHTML')}
+                                    <div class="actions">
+                                    ${likear.prop('outerHTML')}
+                                     ${deslikear.prop('outerHTML')}
+                                    </div></<div>`);
                         });
                     })
                     $.get('/datos', data, function(response){

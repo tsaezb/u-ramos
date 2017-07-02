@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import datetime
 
 from django.db import models
-
+from vote.models import VoteModel
 # Create your models here.
 class Ramo(models.Model):
     name = models.CharField(max_length=50)
@@ -19,7 +19,7 @@ class Profe(models.Model):
     def __str__(self):
         return self.name
         
-class Comentario(models.Model):
+class Comentario(VoteModel,models.Model):
     YEARS = [(r, r) for r in range(1984, datetime.date.today().year + 1)]
     IMPORTANCIA = [(r, r) for r in range(1,8)]
     PRIMAVERA= 'P'
