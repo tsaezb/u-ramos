@@ -1,3 +1,5 @@
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import QuerySet
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
@@ -74,3 +76,48 @@ def get_datos(request):
         "exigencia_ramo_profesor": truncar(PROM_exigencia_ramo_profesor["exigencia_ramo_profesor__avg"]),
         "recomendado": porc_recom
     })
+
+
+def autocomplete(request, search_model):
+    """
+    Arguments:
+        request
+            The request object from the dispatcher
+        search_model
+            The search model (AKA Profe, Ramo)
+
+    The following GET parameters can be set:
+        q   The query string to filter by (match against start of string)
+        p   The current page
+
+    Response is a JSON object with following keys:
+        results     List of model objects
+        more        Boolean if there is more
+    }
+    """
+    # Get model, queryset and options
+    if isinstance(search_model, QuerySet):
+        queryset = search_model
+        search_model = queryset.model
+    else:
+        queryset = search_model.objects
+
+    # Get query string
+    query = request.GET.get('q', '')
+    page = int(request.GET.get('p', 1))
+
+    # Perform search
+    if query:
+            results = queryset.filter(name__startswith=query)
+    else:
+        results = queryset.all()
+
+
+    # Build response
+    response = {
+        'results':  [model.name for model in results],
+    }
+    return HttpResponse(
+        json.dumps(response, cls=DjangoJSONEncoder),
+        content_type='application/json',
+    )

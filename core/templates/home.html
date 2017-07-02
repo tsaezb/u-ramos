@@ -16,9 +16,9 @@
     {% endblock %}
 </head>
 <body>
-	<div ng-controller="AppCtrl" layout="column" style="height:100vh" ng-cloak>
+	<div ng-controller="AppCtrl as ctrl" layout="column" style="height:100vh" ng-cloak>
 <md-toolbar class="md-theme-indigo" md-scroll-shrink ng-if="true">
-
+<md-progress-linear md-mode="indeterminate" ng-disabled="progressStatus"></md-progress-linear>
      <div class="md-toolbar-tools">
         <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()" >
           <md-icon md-svg-icon="{% static 'img/icons/menu.svg' %}"></md-icon>
@@ -71,21 +71,20 @@
           <form ng-submit="$event.preventDefault()">
       <p>Buscar por Ramos.</p>
       <md-autocomplete
-          ng-disabled="ctrl.isDisabled"
+          ng-disabled="false"
           md-no-cache="ctrl.noCache"
-          md-selected-item="ctrl.selectedItem"
-          md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-          md-search-text="ctrl.searchText"
-          md-selected-item-change="ctrl.selectedItemChange(item)"
-          md-items="item in ctrl.querySearch(ctrl.searchText)"
-          md-item-text="item.display"
+          md-selected-item="ctrl.selectedPoliticsItem"
+          md-search-text="ctrl.searchPoliticsText"
+          md-items="item in ctrl.querySearchProfesores(ctrl.searchPoliticsText)"
+          md-item-text="item"
           md-min-length="0"
+          md-selected-item-change="ctrl.selectedItemChange(item)"
           placeholder="Ej: Mecanica">
         <md-item-template>
-          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{$ item $}</span>
         </md-item-template>
         <md-not-found>
-          No states matching "{{ctrl.searchText}}" were found.
+          No states matching "{$ ctrl.searchText $}" were found.
           <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
         </md-not-found>
       </md-autocomplete>

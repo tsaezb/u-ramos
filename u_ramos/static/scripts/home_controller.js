@@ -1,9 +1,34 @@
 'use strict';
-angular.module('u-ramos').controller('AppCtrl',function ($scope, $timeout, $mdSidenav, $log) {
+angular.module('u-ramos').controller('AppCtrl',function ($scope, $timeout, $mdSidenav, $log,$http) {
     $scope.toggleLeft = buildDelayedToggler('left');
-    $scope.toggleRight = buildToggler('right');
-    $scope.isOpenRight = function(){
-      return $mdSidenav('right').isOpen();
+    $scope.progressStatus =  true;
+    var self = this;
+
+    var init = function() {
+      self.selectedPoliticsItem = null;
+      self.searchTextPolitics = null;
+      self.selectedPoliticsTags = [];
+    };
+    init()
+    self.selectedItemChange = function(item){
+       if(typeof item != 'undefined'){
+           $scope.toggleLeft();
+           $scope.progressStatus^= true ;
+
+       }
+    };
+    self.querySearchProfesores = function(query) {
+      return $http.get('profesores/autocomplete/?q=' + query).then(function(response) {
+        console.log(response.data.results)
+        return response.data.results;
+      });
+    };
+
+    self.querySearchRamos = function(query) {
+      return $http.get('ramos/autocomplete/?q=' + query).then(function(response) {
+        console.log(response.data.results)
+        return response.data.results;
+      });
     };
 
     /**
@@ -67,13 +92,5 @@ angular.module('u-ramos').controller('AppCtrl',function ($scope, $timeout, $mdSi
         });
 
     };
+
   })
-  .controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
-    $scope.close = function () {
-      // Component lookup should always be available since we are not using `ng-if`
-      $mdSidenav('right').close()
-        .then(function () {
-          $log.debug("close RIGHT is done");
-        });
-    };
-  });

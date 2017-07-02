@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+
+from core import models
 from core.views import *
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -27,4 +29,11 @@ urlpatterns = [
     url(r'^comentarios$', comentarios_ajax),
     url(r'^send_comm$', save_comm),
     url(r'^datos$', get_datos),
+    url(r'^profesores/autocomplete/$', autocomplete, {'search_model': models.Profe},
+        name='profe_autocomplete',
+        ),
+    url(r'^ramos/autocomplete/$', autocomplete, {'search_model': models.Ramo},
+        name='ramo_autocomplete',
+        ),
+
 ]
