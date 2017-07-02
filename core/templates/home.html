@@ -1,16 +1,53 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html ng-app="u-ramos">
 <head>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+	{% block js %}
+	<script src="{% static 'bower_components/angular/angular.js' %}"></script>
+	<script src="{% static 'bower_components/angular-aria/angular-aria.js' %}"></script>
+	<script src="{% static 'bower_components/angular-animate/angular-animate.js' %}"></script>
+	<script src="{% static 'bower_components/angular-material/angular-material.js' %}"></script>
+    <script src="{% static 'scripts/app.js' %}"></script>
+    <script src="{% static 'scripts/home_controller.js' %}"></script>
+	{% endblock %}
+    {% block css%}
+    <link rel="stylesheet" href="{% static 'bower_components/angular-material/angular-material.min.css' %}">
+    {% endblock %}
 </head>
-	<body ng-app="u-ramos">
+<body>
+	<div ng-controller="AppCtrl" ng-cloak>
+	<md-content class="md-padding">
+    <md-nav-bar
+      md-selected-nav-item="currentNavItem"
+      nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('page1')" name="page1">
+        Page One
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('page2')" name="page2">
+        Page Two
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('page3')" name="page3">
+        Page Three
+      </md-nav-item>
+      <!-- these require actual routing with ui-router or ng-route, so they
+      won't work in the demo
+      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+      You can also add options for the <code>ui-sref-opts</code> attribute.
+      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+        Page Six
+      </md-nav-item>
+      -->
+    </md-nav-bar>
+    <div class="ext-content">
+      External content for `<span>{$currentNavItem$}</span>`.
+    </div>
 
-	<script src="/bower_components/angular/angular.js"></script>
-	<script src="/bower_components/angular-aria/angular-aria.js"></script>
-	<script src="/bower_components/angular-animate/angular-animate.js"></script>
-	<script src="/bower_components/angular-material/angular-material.js"></script>
-    <p>Nothing here</p>
+    <md-checkbox ng-model="disableInkBar">Disable Ink Bar</md-checkbox>
 
+  </md-content>
+  </div>
 </body>
+
 </html>

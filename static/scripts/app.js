@@ -1,1 +1,0 @@
-var my_app = angular.module('u-ramos, [/* other dependencies */, 'djng.forms']);

@@ -4,8 +4,8 @@
 .~c9*
 
 #Bower 
-bower_components/
-
+u_ramos/static/bower_components/    
+staticfiles/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
