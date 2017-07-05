@@ -5,28 +5,34 @@ angular.module('u-ramos').controller('AppCtrl',function ($scope, $timeout, $mdSi
     var self = this;
 
     var init = function() {
-      self.selectedPoliticsItem = null;
-      self.searchTextPolitics = null;
-      self.selectedPoliticsTags = [];
+      self.selectedProfesItem = null;
+      self.searchTextProfes = null;
+      self.selectedProfesTags = [];
+      self.selectedRamosItem = null;
+      self.searchTextRamos = null;
+      self.selectedRamosTags = [];
     };
     init()
     self.selectedItemChange = function(item){
-       if(typeof item != 'undefined'){
-           $scope.toggleLeft();
-           $scope.progressStatus^= true ;
-
-       }
+      if(typeof item != 'undefined'){
+        $scope.toggleLeft();
+        $scope.progressStatus= true;
+        
+        return $http.get('ramo_profe/?name_profe=' + (self.selectedProfesItem ? self.selectedProfesItem : '') + '&name_ramo=' + (self.selectedRamosItem ? self.selectedRamosItem : '')).then(function(response) {
+          console.log(response.data);
+          $scope.progressStatus= false;
+          return response.data.results;
+        });
+      }
     };
     self.querySearchProfesores = function(query) {
       return $http.get('profesores/autocomplete/?q=' + query).then(function(response) {
-        console.log(response.data.results)
         return response.data.results;
       });
     };
 
     self.querySearchRamos = function(query) {
       return $http.get('ramos/autocomplete/?q=' + query).then(function(response) {
-        console.log(response.data.results)
         return response.data.results;
       });
     };
@@ -47,14 +53,6 @@ angular.module('u-ramos').controller('AppCtrl',function ($scope, $timeout, $mdSi
           func.apply(context, args);
         }, wait || 10);
       };
-    }
-    $scope.todos = [];
-    for (var i = 0; i < 15; i++) {
-    $scope.todos.push({
-      what: "Brunch this weekend?",
-      who: "Min Li Chan",
-      notes: "I'll be in your neighborhood doing errands."
-    });
     }
 
     /**

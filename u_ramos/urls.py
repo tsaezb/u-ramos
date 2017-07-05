@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^$', Home),
     url(r'^getdetails/', getdetails),
     url(r'^comentarios$', comentarios_ajax),
+    url(r'^ramo_profe/$', ramo_profe_ajax),
     url(r'^send_comm$', save_comm),
     url(r'^datos$', get_datos),
     url(r'^profesores/autocomplete/$', autocomplete, {'search_model': models.Profe},

@@ -12,6 +12,8 @@ class Ramo(models.Model):
     
     def __str__(self):
         return self.name.encode('utf8')
+    def to_dict(self):
+        return {"name": self.name, "code": self.code}
 @python_2_unicode_compatible  
 class Profe(models.Model):
     name = models.CharField(max_length=50)
@@ -19,7 +21,8 @@ class Profe(models.Model):
 
     def __str__(self):
         return self.name.encode('utf8')
-        
+    def to_dict(self):
+        return {"name": self.name, "ramos": [r.to_dict() for r in self.ramos.all()]}
 @python_2_unicode_compatible 
 class Comentario(models.Model):
     YEARS = [(r, r) for r in range(1984, datetime.date.today().year + 1)]

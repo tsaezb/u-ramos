@@ -11,6 +11,10 @@ try:
 except:
     import json
 
+
+def truncar(x):
+    return ('%.2f' % x).rstrip('0').rstrip('.')
+
 # Create your views here.
 def Home(request):
     if request.method == "GET":
@@ -53,9 +57,24 @@ def save_comm(request):
     Profes = Profe.objects.all()
     return render(request, 'home.html', {"ramos": Ramos, "profes": Profes, "comm_status": True})
     
+def get_resumen_profe_ramo(p, r):
+    PROM_importancia_asistencia_catedra = Comentario.objects.filter(profe=p, ramo=r).aggregate(Avg('importancia_asistencia_catedra'))
+    PROM_importancia_asistencia_auxiliar = Comentario.objects.filter(profe=p, ramo=r).aggregate(Avg('importancia_asistencia_auxiliar'))
+    PROM_exigencia_ramo_profesor = Comentario.objects.filter(profe=p, ramo= r).aggregate(Avg('exigencia_ramo_profesor'))
+    comentarios = Comentario.objects.filter(profe=p, ramo= r)
+    total_recomienda = comentarios.filter(recomienda=True).count()
+    if comentarios.count()==0:
+        porc_recom = 'No hay datos'
+    else:
+        porc_recom = total_recomienda*100/comentarios.count()
+    return {"importancia_asistencia_catedra": truncar(PROM_importancia_asistencia_catedra["importancia_asistencia_catedra__avg"]),
+        "importancia_asistencia_auxiliar": truncar(PROM_importancia_asistencia_auxiliar["importancia_asistencia_auxiliar__avg"]),
+        "exigencia_ramo_profesor": truncar(PROM_exigencia_ramo_profesor["exigencia_ramo_profesor__avg"]),
+        "recomendado": porc_recom,
+        "cantidad_comentarios": comentarios.count()
+    }
+
 def get_datos(request):
-    def truncar(x):
-        return ('%.2f' % x).rstrip('0').rstrip('.')
     
     profe = request.GET.get("id_profe")
     
@@ -74,7 +93,8 @@ def get_datos(request):
     return JsonResponse({"importancia_asistencia_catedra": truncar(PROM_importancia_asistencia_catedra["importancia_asistencia_catedra__avg"]),
         "importancia_asistencia_auxiliar": truncar(PROM_importancia_asistencia_auxiliar["importancia_asistencia_auxiliar__avg"]),
         "exigencia_ramo_profesor": truncar(PROM_exigencia_ramo_profesor["exigencia_ramo_profesor__avg"]),
-        "recomendado": porc_recom
+        "recomendado": porc_recom,
+        "cantidad_comentarios": comentarios.count()
     })
 
 
@@ -121,3 +141,22 @@ def autocomplete(request, search_model):
         json.dumps(response, cls=DjangoJSONEncoder),
         content_type='application/json',
     )
+    
+def ramo_profe_ajax(request):
+    name_ramo = request.GET.get('name_ramo')
+    name_profe = request.GET.get('name_profe')
+    if name_ramo and name_profe:
+        ramo = Ramo.objects.get(name=name_ramo)
+        profe = Profe.objects.get(name=name_profe)
+        return JsonResponse({"ramo": ramo.to_dict(), "profe":profe.to_dict(), "resumen": get_resumen_profe_ramo(profe, ramo)})
+    if name_ramo:
+        ramo = Ramo.objects.get(name=name_ramo)
+        profes = Profe.objects.filter(ramos__in=[ramo])
+        return JsonResponse({"ramo": ramo.to_dict(), "profes": [p.to_dict() for p in profes.all()]})
+    if name_profe:
+        profe = Profe.objects.get(name=name_profe)
+        ramos=[]
+        for ramo in profe.ramos.all():
+            ramos.append([ramo.name, ramo.code, get_resumen_profe_ramo(profe, ramo)])
+        return JsonResponse({"profe":profe.to_dict(), "ramos": ramos})
+    return JsonResponse({})
